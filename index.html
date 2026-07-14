@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BigHorn Roofing — Utah's Roofing, Siding &amp; Window Professionals</title>
+<meta name="description" content="BigHorn Roofing — GAF Master Elite® President's Club roofers serving the Wasatch Front &amp; Back for 20+ years. Re-roofing, repair, siding, Pella windows. Free estimates: (801) 305-4851." />
+<meta property="og:title" content="BigHorn Roofing — Watch Your Roof Come Back to Life" />
+<meta property="og:description" content="Utah's GAF Master Elite® President's Club roofing company. 4,000+ roofs. 50-year warranties. Free estimates." />
+<meta property="og:type" content="website" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M2 18 16 5l14 13h-5v9h-6v-7h-6v7H7v-9z' fill='%23f0a832'/%3E%3C/svg%3E" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- ======= NAV ======= -->
+<header class="nav" id="nav">
+  <div class="nav__inner">
+    <a class="nav__brand" href="#top" aria-label="BigHorn Roofing home">
+      <svg class="nav__logo" viewBox="0 0 40 40" aria-hidden="true">
+        <path d="M4 24 20 8l16 16h-6v10h-7v-8h-6v8H10V24z" fill="currentColor"/>
+        <path d="M20 8 4 24" stroke="var(--gold)" stroke-width="3" stroke-linecap="round" fill="none"/>
+      </svg>
+      <span class="nav__name">BIGHORN<em>ROOFING</em></span>
+    </a>
+    <nav class="nav__links" aria-label="Primary">
+      <a href="#services">Services</a>
+      <a href="#difference">The Difference</a>
+      <a href="#why">Why BigHorn</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#areas">Service Area</a>
+    </nav>
+    <div class="nav__cta">
+      <a class="nav__phone" href="tel:+18013054851">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.5 2.1L8.1 10a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.9.5 2.9.7a2 2 0 0 1 1.6 2z"/></svg>
+        (801) 305-4851
+      </a>
+      <a class="btn btn--gold btn--sm" href="#estimate">Free Estimate</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ======= SCROLL-SCRUB HERO ======= -->
+<section class="hero" id="hero" aria-label="Roof replacement timelapse">
+  <div class="hero__sticky">
+    <canvas class="hero__canvas" id="heroCanvas"></canvas>
+    <video class="hero__video" id="heroVideo" muted playsinline preload="auto" aria-hidden="true">
+      <source src="assets/hero-timelapse.mp4" type="video/mp4" />
+    </video>
+    <div class="hero__vignette" aria-hidden="true"></div>
+
+    <div class="hero__captions">
+      <div class="hero__caption is-active" data-stage="0">
+        <p class="hero__kicker">Bird's-eye view · Somewhere on the Wasatch Front</p>
+        <h1>This is the roof<br/>you're living under.</h1>
+        <p class="hero__sub">Twenty years of Utah sun, snow, and hail. Keep scrolling — watch what we do about it.</p>
+      </div>
+      <div class="hero__caption" data-stage="1">
+        <p class="hero__kicker">Step 1 — Tear-off</p>
+        <h2>We strip it to the deck.</h2>
+        <p class="hero__sub">Every shingle, every nail. No roofing over problems. No shortcuts.</p>
+      </div>
+      <div class="hero__caption" data-stage="2">
+        <p class="hero__kicker">Step 2 — Protect</p>
+        <h2>Then we armor it.</h2>
+        <p class="hero__sub">Ice &amp; water shield and synthetic underlayment — built for Utah winters.</p>
+      </div>
+      <div class="hero__caption" data-stage="3">
+        <p class="hero__kicker">Step 3 — Rebuild</p>
+        <h2>New roof. Row by row.</h2>
+        <p class="hero__sub">GAF architectural shingles installed by a Master Elite® President's Club crew.</p>
+      </div>
+      <div class="hero__caption hero__caption--final" data-stage="4">
+        <p class="hero__kicker">Done in a day. Guaranteed for decades.</p>
+        <h2>BigHorn Roofing.</h2>
+        <p class="hero__sub">Utah's roofing, siding &amp; window professionals — 4,000+ roofs and counting.</p>
+        <div class="hero__actions">
+          <a class="btn btn--gold" href="#estimate">Get My Free Estimate</a>
+          <a class="btn btn--ghost" href="tel:+18013054851">Call (801) 305-4851</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero__progress" aria-hidden="true">
+      <span class="hero__progress-label" id="heroStageLabel">Old roof</span>
+      <div class="hero__progress-track"><div class="hero__progress-fill" id="heroProgressFill"></div></div>
+    </div>
+
+    <div class="hero__scrollhint" id="scrollHint" aria-hidden="true">
+      <span>Scroll to replace this roof</span>
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 4v16m0 0-6-6m6 6 6-6"/></svg>
+    </div>
+  </div>
+</section>
+
+<!-- ======= TRUST MARQUEE ======= -->
+<div class="marquee" aria-label="Certifications">
+  <div class="marquee__track">
+    <span>GAF Master Elite® President's Club</span><i>◆</i>
+    <span>IBHS Fortified Certified Contractor</span><i>◆</i>
+    <span>Pella Certified Contractor</span><i>◆</i>
+    <span>James Hardie Siding Partner</span><i>◆</i>
+    <span>20+ Years Serving Utah</span><i>◆</i>
+    <span>Free Estimates · Financing Available</span><i>◆</i>
+    <span>GAF Master Elite® President's Club</span><i>◆</i>
+    <span>IBHS Fortified Certified Contractor</span><i>◆</i>
+    <span>Pella Certified Contractor</span><i>◆</i>
+    <span>James Hardie Siding Partner</span><i>◆</i>
+    <span>20+ Years Serving Utah</span><i>◆</i>
+    <span>Free Estimates · Financing Available</span><i>◆</i>
+  </div>
+</div>
+
+<!-- ======= STATS ======= -->
+<section class="stats reveal">
+  <div class="container stats__grid">
+    <div class="stat"><strong data-count="10000" data-suffix="+">0</strong><span>Roofing estimates delivered</span></div>
+    <div class="stat"><strong data-count="4000" data-suffix="+">0</strong><span>Roofs completed across Utah</span></div>
+    <div class="stat"><strong data-count="50" data-suffix="+">0</strong><span>Trained professionals</span></div>
+    <div class="stat"><strong data-count="20" data-suffix="+">0</strong><span>Years in business</span></div>
+  </div>
+</section>
+
+<!-- ======= SERVICES ======= -->
+<section class="section" id="services">
+  <div class="container">
+    <p class="section__kicker reveal">What we do</p>
+    <h2 class="section__title reveal">Everything above<br/>your front door.</h2>
+    <p class="section__lead reveal">Roofs are the headline act — but we handle the whole envelope of your home, with the same crews and the same standards.</p>
+
+    <div class="cards">
+      <article class="card reveal">
+        <div class="card__icon"><svg viewBox="0 0 24 24"><path d="M2 12 12 3l10 9h-3v8h-5v-5h-4v5H5v-8H2z"/></svg></div>
+        <h3>Residential Re-Roofing</h3>
+        <p>Full tear-off and replacement with GAF architectural shingles — backed by warranties most roofers can't offer.</p>
+      </article>
+      <article class="card reveal">
+        <div class="card__icon"><svg viewBox="0 0 24 24"><path d="M3 21V8l7-5 7 5v13h-4v-7H7v7H3zM21 21V11l-2-1.5"/></svg></div>
+        <h3>New Construction Roofing</h3>
+        <p>Builder-grade schedules, Master Elite quality. We roof new homes across the Wasatch Front and Back.</p>
+      </article>
+      <article class="card reveal">
+        <div class="card__icon"><svg viewBox="0 0 24 24"><path d="M4 15 12 7l4 4 4-4M4 15v4h16v-8"/></svg></div>
+        <h3>Roof Repair</h3>
+        <p>Leaks, wind damage, missing shingles, flashing failures — diagnosed honestly, fixed right the first time.</p>
+      </article>
+      <article class="card reveal">
+        <div class="card__icon"><svg viewBox="0 0 24 24"><path d="M12 2 3 7v6c0 5 4 8.4 9 9 5-.6 9-4 9-9V7l-9-5z"/></svg></div>
+        <h3>Fortified Roofing</h3>
+        <p>IBHS-certified Fortified installs engineered for severe weather and the canyon winds Utah is famous for.</p>
+      </article>
+      <article class="card reveal">
+        <div class="card__icon"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M12 3v18M4 12h16"/></svg></div>
+        <h3>Pella® Windows</h3>
+        <p>Certified Pella contractor for installation, repair, and replacement — casement to custom, double to triple pane.</p>
+      </article>
+      <article class="card reveal">
+        <div class="card__icon"><svg viewBox="0 0 24 24"><path d="M3 5h18M3 9h18M3 13h18M3 17h18M3 21h18"/></svg></div>
+        <h3>James Hardie® Siding</h3>
+        <p>Fiber-cement siding that shrugs off hail, sun, and time — installed by a certified James Hardie partner.</p>
+      </article>
+      <article class="card reveal">
+        <div class="card__icon"><svg viewBox="0 0 24 24"><path d="M3 7h18v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7zM6 12v6a2 2 0 0 0 2 2h0"/></svg></div>
+        <h3>Soffit, Fascia &amp; Gutters</h3>
+        <p>The finishing system that keeps water where it belongs — matched to your roof, not tacked on after.</p>
+      </article>
+      <article class="card reveal">
+        <div class="card__icon"><svg viewBox="0 0 24 24"><path d="M12 2v6m0 8v6m-7-11H2m20 0h-3M5.6 5.6l2.1 2.1m8.6 8.6 2.1 2.1m0-12.8-2.1 2.1M5.6 18.4l2.1-2.1"/></svg></div>
+        <h3>Snow &amp; Ice Dam Removal</h3>
+        <p>Residential and commercial. We take the weight off before it takes your roof — safely, and fast.</p>
+      </article>
+      <article class="card reveal">
+        <div class="card__icon"><svg viewBox="0 0 24 24"><rect x="3" y="10" width="18" height="10" rx="1"/><path d="M3 15h18M8 10v10m8-10v10M12 2v4m-4-3 1 3m7-3-1 3"/></svg></div>
+        <h3>Solar Installation</h3>
+        <p>Panels installed by the people who understand what's under them — your roof warranty stays intact.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ======= BEFORE / AFTER ======= -->
+<section class="section section--dark" id="difference">
+  <div class="container">
+    <p class="section__kicker reveal">Before &amp; after</p>
+    <h2 class="section__title reveal">Drag the line.<br/>See the difference.</h2>
+    <div class="ba reveal" id="baSlider" role="slider" aria-label="Before and after roof comparison" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" tabindex="0">
+      <canvas class="ba__canvas" id="baAfter"></canvas>
+      <div class="ba__before-wrap" id="baBeforeWrap"><canvas class="ba__canvas" id="baBefore"></canvas></div>
+      <div class="ba__handle" id="baHandle">
+        <div class="ba__handle-line"></div>
+        <div class="ba__handle-knob">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m9 6-5 6 5 6M15 6l5 6-5 6"/></svg>
+        </div>
+      </div>
+      <span class="ba__tag ba__tag--before">The roof you have</span>
+      <span class="ba__tag ba__tag--after">The roof you deserve</span>
+    </div>
+  </div>
+</section>
+
+<!-- ======= WHY BIGHORN ======= -->
+<section class="section" id="why">
+  <div class="container">
+    <p class="section__kicker reveal">Why BigHorn</p>
+    <h2 class="section__title reveal">Big enough to trust.<br/>Small enough to care.</h2>
+    <div class="why">
+      <article class="why__item reveal">
+        <span class="why__num">01</span>
+        <h3>The Most for Your Money</h3>
+        <p>Free estimates, honest pricing, financing available, and zero high-pressure sales. We win on value, not on pressure.</p>
+      </article>
+      <article class="why__item reveal">
+        <span class="why__num">02</span>
+        <h3>Superior Craftsmanship</h3>
+        <p>GAF Master Elite® President's Club — an award earned by a fraction of roofers in America. Our crews train for it every year.</p>
+      </article>
+      <article class="why__item reveal">
+        <span class="why__num">03</span>
+        <h3>R-E-S-P-E-C-T</h3>
+        <p>Your property is treated like our own: protected landscaping, magnetic nail sweeps, and a spotless site when we leave.</p>
+      </article>
+      <article class="why__item reveal">
+        <span class="why__num">04</span>
+        <h3>We Stand By You</h3>
+        <p>Family-owned, Midvale-based, and still answering the phone 20 years in. When we say we'll be there, we're there.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ======= WARRANTY ======= -->
+<section class="warranty section--dark">
+  <div class="container">
+    <p class="section__kicker reveal">Put it in writing</p>
+    <h2 class="section__title reveal">Warranties that outlast<br/>most mortgages.</h2>
+    <div class="warranty__grid">
+      <div class="warranty__item reveal"><strong>50<span>yr</span></strong><p>Manufacturer warranty on materials</p></div>
+      <div class="warranty__item reveal"><strong>25<span>yr</span></strong><p>BigHorn workmanship guarantee</p></div>
+      <div class="warranty__item reveal"><strong>GAF</strong><p>Golden Pledge® — workmanship covered up to 30 years</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ======= REVIEWS ======= -->
+<section class="section" id="reviews">
+  <div class="container">
+    <p class="section__kicker reveal">Word of mouth</p>
+    <h2 class="section__title reveal">4,000+ happy roofs.<br/>Here are two of them.</h2>
+    <div class="reviews">
+      <figure class="review reveal">
+        <div class="review__stars" aria-label="5 out of 5 stars">★★★★★</div>
+        <blockquote>"Bryce was great to work with! We were in a time crunch to get the roof done before closing on the sale of our home. He and his crew got the work done fast — they even worked on Thanksgiving Day to make sure it got done. So patient and reassuring for a couple of first-time home-sellers."</blockquote>
+        <figcaption>— Lilia P.</figcaption>
+      </figure>
+      <figure class="review reveal">
+        <div class="review__stars" aria-label="5 out of 5 stars">★★★★★</div>
+        <blockquote>"I LOVE my new roof! These guys were great to work with. Very quick responses, photos and texts through the whole process, and they really went the extra mile with follow-up. We had two layers of shingles to remove and some unusual obstacles. I highly recommend them!!"</blockquote>
+        <figcaption>— Tammy R.</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ======= SERVICE AREA ======= -->
+<section class="section section--dark" id="areas">
+  <div class="container">
+    <p class="section__kicker reveal">Where we work</p>
+    <h2 class="section__title reveal">The Wasatch Front.<br/>The Wasatch Back.<br/>Your street.</h2>
+    <div class="areas reveal">
+      <span>Salt Lake City</span><span>Sandy</span><span>Ogden</span><span>Layton</span>
+      <span>West Jordan</span><span>Heber City</span><span>Tooele</span><span>Kamas</span>
+      <span>Lehi</span><span>Provo</span><span>Bountiful</span><span>Park City</span>
+      <span>Pleasant Grove</span><span>West Valley City</span><span>Spanish Fork</span>
+    </div>
+    <p class="areas__note reveal">Don't see your city? If you're near the Wasatch, we're near you — <a href="tel:+18013054851">give us a call</a>.</p>
+  </div>
+</section>
+
+<!-- ======= ESTIMATE CTA ======= -->
+<section class="estimate" id="estimate">
+  <div class="container estimate__grid">
+    <div class="estimate__copy reveal">
+      <p class="section__kicker">Free estimate</p>
+      <h2 class="section__title">Your roof, priced<br/>in 24 hours.</h2>
+      <p class="section__lead">No pressure, no obligation, no mystery line items. Tell us about your home and a real person will get back to you — usually the same day.</p>
+      <ul class="estimate__perks">
+        <li>Free detailed estimate — 10,000+ delivered</li>
+        <li>Financing available on roofing &amp; siding</li>
+        <li>Mon–Sat, 7am–6pm · (801) 305-4851</li>
+      </ul>
+    </div>
+    <form class="estimate__form reveal" id="estimateForm">
+      <div class="field"><label for="fName">Name</label><input id="fName" name="name" type="text" required placeholder="Jane Anderson" /></div>
+      <div class="field"><label for="fPhone">Phone</label><input id="fPhone" name="phone" type="tel" required placeholder="(801) 555-0123" /></div>
+      <div class="field"><label for="fCity">City</label><input id="fCity" name="city" type="text" placeholder="Sandy, UT" /></div>
+      <div class="field">
+        <label for="fService">What do you need?</label>
+        <select id="fService" name="service">
+          <option>Roof replacement</option>
+          <option>Roof repair</option>
+          <option>New construction</option>
+          <option>Windows</option>
+          <option>Siding</option>
+          <option>Gutters / soffit / fascia</option>
+          <option>Snow / ice dam removal</option>
+          <option>Solar</option>
+          <option>Something else</option>
+        </select>
+      </div>
+      <div class="field"><label for="fMsg">Anything we should know?</label><textarea id="fMsg" name="message" rows="3" placeholder="Roof is ~18 years old, noticed a leak near the chimney…"></textarea></div>
+      <button class="btn btn--gold btn--full" type="submit">Send My Free Estimate Request</button>
+      <p class="estimate__fine">Submitting opens an email to estimating@bighornroofing.net — or just call <a href="tel:+18013054851">(801) 305-4851</a>.</p>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<!-- ======= FOOTER ======= -->
+<footer class="footer">
+  <div class="container footer__grid">
+    <div>
+      <a class="nav__brand" href="#top">
+        <svg class="nav__logo" viewBox="0 0 40 40" aria-hidden="true"><path d="M4 24 20 8l16 16h-6v10h-7v-8h-6v8H10V24z" fill="currentColor"/><path d="M20 8 4 24" stroke="var(--gold)" stroke-width="3" stroke-linecap="round" fill="none"/></svg>
+        <span class="nav__name">BIGHORN<em>ROOFING</em></span>
+      </a>
+      <p class="footer__tag">Utah's roofing, siding &amp; window installation professionals. Family-owned. Master Elite®. 20+ years strong.</p>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <p><a href="tel:+18013054851">(801) 305-4851</a><br/>
+      <a href="mailto:estimating@bighornroofing.net">estimating@bighornroofing.net</a><br/>
+      7789 S Allen Street<br/>Midvale, UT 84047</p>
+    </div>
+    <div>
+      <h4>Hours</h4>
+      <p>Monday – Saturday<br/>7:00am – 6:00pm<br/><span class="footer__muted">Sunday: closed (roofs need rest too)</span></p>
+    </div>
+    <div>
+      <h4>Credentials</h4>
+      <p>GAF Master Elite® President's Club<br/>IBHS Fortified Certified<br/>Pella Certified Contractor<br/>James Hardie Partner</p>
+    </div>
+  </div>
+  <div class="container footer__legal">
+    <span>© <span id="year"></span> BigHorn Roofing. All rights reserved.</span>
+    <a href="#top">Back to top ↑</a>
+  </div>
+</footer>
+
+<a class="fab" href="tel:+18013054851" aria-label="Call BigHorn Roofing">
+  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.5 2.1L8.1 10a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.9.5 2.9.7a2 2 0 0 1 1.6 2z"/></svg>
+</a>
+
+<script src="js/hero.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
