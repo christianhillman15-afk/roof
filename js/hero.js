@@ -1,8 +1,10 @@
 /* ============================================================
-   BigHorn Roofing — scroll-scrubbed hero
-   Bird's-eye roof-replacement timelapse, drawn on <canvas>.
-   If assets/hero-timelapse.mp4 exists (AI-generated video),
-   the canvas hands off to the video and scroll scrubs it.
+   Vertical Solutions Roofing — scroll-scrubbed hero
+   Bird's-eye storm-to-restoration timelapse, drawn on <canvas>:
+   calm → hail storm damages the roof → tear-off → dry-in →
+   new shingles → restored. If assets/hero-timelapse.mp4 exists
+   (AI-generated video), the canvas hands off to the video and
+   scroll scrubs it instead.
    ============================================================ */
 (function () {
   "use strict";
@@ -23,10 +25,11 @@
 
   // ---------- timeline ----------
   const T = {
-    introEnd: 0.08,
-    tearStart: 0.08, tearEnd: 0.40,
-    underStart: 0.40, underEnd: 0.52,
-    instStart: 0.52, instEnd: 0.90,
+    introEnd: 0.06,
+    stormStart: 0.06, stormEnd: 0.22,
+    tearStart: 0.24, tearEnd: 0.48,
+    underStart: 0.48, underEnd: 0.58,
+    instStart: 0.58, instEnd: 0.90,
     capStart: 0.90, capEnd: 0.95,
   };
 
@@ -82,14 +85,14 @@
 
   function makeCell(x, y, w, h, rowIdx, rowCount, rnd, minX, maxX, sunSide, roof) {
     const cx = x + w / 2;
-    const j1 = rnd(), j2 = rnd(), j3 = rnd();
+    const j1 = rnd(), j2 = rnd(), j3 = rnd(), j4 = rnd();
     const xf = (cx - minX) / (maxX - minX); // 0..1 across the whole roofline, L → R
     return {
       x, y, w, h, roof,
       shade: j1,                                   // per-cell tint variation
-      stain: j2 < 0.16,                            // old-roof stain
-      moss: j2 > 0.9,                              // old-roof moss patch
-      missing: j3 < 0.05,                          // missing shingle
+      damaged: j4 < 0.32,                          // takes a hail/wind hit during the storm
+      dmgT: 0.05 + (j4 / 0.32) * 0.85,             // when during the storm the hit lands
+      dmgSeed: j2,                                 // pock placement / torn-off variant
       tearT: xf * 0.82 + j1 * 0.18,                // tear-off order (wipe L → R)
       underT: xf * 0.85 + j2 * 0.15,               // underlayment order
       instT: (rowIdx / Math.max(1, rowCount - 1)) * 0.62 + xf * 0.3 + j3 * 0.08, // eave → ridge
@@ -103,14 +106,14 @@
     street: "#3c3f45", sidewalk: "#8f8b83", curb: "#6f6b64",
     drive: "#a29b8e", driveLine: "#8d8577",
     wall: "#d8d2c6", walk: "#b7b0a2",
-    oldA: "#77695d", oldB: "#6a5e53", oldC: "#82756a", oldStain: "#4c433c",
-    oldMoss: "#5d6b41", oldMissing: "#3e3831",
+    oldA: "#8a8178", oldB: "#7d746b", oldC: "#948b81", oldStain: "#5a524a",
+    oldMissing: "#453e37", pock: "#4a423b",
     deckA: "#b98e5a", deckB: "#ad8250", deckSeam: "#8a6538",
     under: "#8d9096", underSeam: "#75787e",
     newA: "#2e3238", newB: "#343941", newC: "#282c31", newEdge: "#454b55",
     ridgeCap: "#22252a",
-    dumpster: "#2f6b46", dumpsterDark: "#24523635",
-    truck: "#e9e7e1", gold: "#f0a832",
+    dumpster: "#24558f", dumpsterDark: "#1c4271",
+    truck: "#e9e7e1", accent: "#3aa0ff",
   };
 
   // ---------- one full frame at progress p ----------
@@ -123,6 +126,9 @@
     ctx.scale(s * zoom, s * zoom);
     ctx.translate(-W / 2, -H / 2);
 
+    const stormP = phase(p, T.stormStart, T.stormEnd);
+    const stormI = Math.sin(stormP * Math.PI);              // storm rolls in, peaks, clears
+    const dmgReveal = ease(phase(p, T.stormStart + 0.02, T.stormEnd - 0.02));
     const tearP = ease(phase(p, T.tearStart, T.tearEnd));
     const underP = ease(phase(p, T.underStart, T.underEnd));
     const instP = ease(phase(p, T.instStart, T.instEnd));
@@ -190,11 +196,12 @@
 
     // ----- roof cells -----
     for (const cell of cells) {
-      let state = 0; // 0 old, 1 deck, 2 underlayment, 3 new
+      let state = 0; // 0 pre-storm/damaged, 1 deck, 2 underlayment, 3 new
       if (instP >= cell.instT) state = 3;
       else if (underP >= cell.underT) state = 2;
       else if (tearP >= cell.tearT) state = 1;
-      drawCell(ctx, cell, state);
+      const dmg = state === 0 && cell.damaged && dmgReveal >= cell.dmgT;
+      drawCell(ctx, cell, state, dmg);
     }
 
     // ----- eave outline for definition -----
@@ -214,9 +221,11 @@
       ctx.lineTo(r1.x + r1.w / 2, r1.y + 6 + (r1.h - 12) * capP); ctx.stroke();
     }
 
-    // ----- job site props -----
-    drawTruck(ctx);
-    drawDumpster(ctx, tearP);
+    // ----- job site props (arrive once the rebuild begins) -----
+    if (p >= T.tearStart - 0.02) {
+      drawTruck(ctx);
+      drawDumpster(ctx, tearP);
+    }
     drawPallets(ctx, p, instP);
 
     // ----- debris flying to the dumpster -----
@@ -243,6 +252,44 @@
     ctx.beginPath(); ctx.ellipse(W - ((p * 600) % (W + 700)) + 300, 650, 260, 100, -0.2, 0, 7); ctx.fill();
     ctx.globalAlpha = 1;
 
+    // ----- the storm itself -----
+    if (stormI > 0.01) {
+      // sky goes dark
+      ctx.fillStyle = "rgba(9,13,22," + (0.42 * stormI).toFixed(3) + ")";
+      ctx.fillRect(0, 0, W, H);
+      // racing storm-cloud banks
+      ctx.globalAlpha = 0.16 * stormI; ctx.fillStyle = "#060a12";
+      for (let k = 0; k < 3; k++) {
+        const x = ((p * 4200 + k * 640) % (W + 1200)) - 600;
+        ctx.beginPath(); ctx.ellipse(x, 140 + k * 260, 420, 150, 0.25, 0, 7); ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+      // driving rain
+      const rr = mulberry32(555);
+      ctx.strokeStyle = "rgba(200,215,235," + (0.28 * stormI).toFixed(3) + ")";
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      for (let i = 0; i < 70; i++) {
+        const bx = rr() * W, by = rr() * H;
+        const x = (bx + p * 2400) % W, y = (by + p * 5200) % H;
+        ctx.moveTo(x, y); ctx.lineTo(x - 16, y + 30);
+      }
+      ctx.stroke();
+      // hail
+      ctx.fillStyle = "rgba(235,242,250," + (0.55 * stormI).toFixed(3) + ")";
+      for (let i = 0; i < 40; i++) {
+        const bx = rr() * W, by = rr() * H;
+        const x = (bx + p * 1500) % W, y = (by + p * 6400) % H;
+        ctx.beginPath(); ctx.arc(x, y, 2 + rr() * 2, 0, 7); ctx.fill();
+      }
+      // lightning strobes
+      const f = Math.exp(-Math.pow((stormP - 0.48) / 0.02, 2)) + Math.exp(-Math.pow((stormP - 0.72) / 0.015, 2));
+      if (f > 0.01) {
+        ctx.fillStyle = "rgba(240,246,255," + (0.5 * f * stormI).toFixed(3) + ")";
+        ctx.fillRect(0, 0, W, H);
+      }
+    }
+
     // ----- finishing sheen on the new roof -----
     if (p > T.capEnd) {
       const q = phase(p, T.capEnd, 1);
@@ -259,14 +306,24 @@
     ctx.restore();
   }
 
-  function drawCell(ctx, cell, state) {
+  function drawCell(ctx, cell, state, dmg) {
     const { x, y, w, h } = cell;
     if (state === 0) {
       ctx.fillStyle = cell.shade < 0.33 ? C.oldA : cell.shade < 0.66 ? C.oldB : C.oldC;
       ctx.fillRect(x, y, w, h);
-      if (cell.stain) { ctx.fillStyle = C.oldStain; ctx.globalAlpha = 0.55; ctx.fillRect(x + 3, y + 3, w - 6, h - 6); ctx.globalAlpha = 1; }
-      if (cell.moss) { ctx.fillStyle = C.oldMoss; ctx.globalAlpha = 0.6; ctx.fillRect(x + 4, y + 4, w - 8, h - 8); ctx.globalAlpha = 1; }
-      if (cell.missing) { ctx.fillStyle = C.oldMissing; ctx.fillRect(x + 2, y + 2, w - 4, h - 4); }
+      if (dmg) {
+        if (cell.dmgSeed > 0.75) { // shingle torn clean off by wind
+          ctx.fillStyle = C.oldMissing; ctx.fillRect(x + 2, y + 2, w - 4, h - 4);
+        } else { // hail pocks
+          ctx.fillStyle = C.pock;
+          const o = cell.dmgSeed;
+          ctx.fillRect(x + 4 + o * 10, y + 4, 7, 6);
+          ctx.fillRect(x + w * 0.55 - o * 8, y + h * 0.4, 6, 6);
+          ctx.fillRect(x + w * 0.3, y + h - 10, 5, 5);
+          ctx.fillStyle = C.oldStain; ctx.globalAlpha = 0.4;
+          ctx.fillRect(x + 2, y + 2, w - 4, h - 4); ctx.globalAlpha = 1;
+        }
+      }
       ctx.strokeStyle = "rgba(0,0,0,0.16)"; ctx.lineWidth = 1; ctx.strokeRect(x + 0.5, y + 0.5, w - 1, h - 1);
     } else if (state === 1) {
       ctx.fillStyle = cell.shade < 0.5 ? C.deckA : C.deckB;
@@ -320,7 +377,7 @@
     ctx.fillStyle = C.truck; ctx.fillRect(0, 0, 220, 56);          // bed + cab
     ctx.fillStyle = "#c9c5bc"; ctx.fillRect(150, 0, 70, 56);       // cab roof
     ctx.fillStyle = "#2c3340"; ctx.fillRect(142, 4, 10, 48);       // windshield
-    ctx.fillStyle = C.gold; ctx.fillRect(0, 24, 142, 8);           // brand stripe
+    ctx.fillStyle = C.accent; ctx.fillRect(0, 24, 142, 8);         // brand stripe
     ctx.fillStyle = "#5d554b";                                      // ladder in the bed
     ctx.fillRect(12, 14, 118, 4); ctx.fillRect(12, 38, 118, 4);
     for (let i = 0; i < 6; i++) ctx.fillRect(20 + i * 20, 14, 4, 28);
@@ -332,7 +389,7 @@
     ctx.translate(975, 620);
     ctx.fillStyle = "rgba(0,0,0,0.3)"; ctx.fillRect(5, 6, 150, 92);
     ctx.fillStyle = C.dumpster; ctx.fillRect(0, 0, 150, 92);
-    ctx.fillStyle = "#234f35"; ctx.fillRect(8, 8, 134, 76);
+    ctx.fillStyle = C.dumpsterDark; ctx.fillRect(8, 8, 134, 76);
     if (tearP > 0.03) { // debris pile grows with tear-off
       const rnd = mulberry32(77);
       const n = Math.floor(90 * tearP);
@@ -342,13 +399,13 @@
         ctx.save(); ctx.translate(dx, dy); ctx.rotate(rnd() * 3); ctx.fillRect(-7, -3, 14, 6); ctx.restore();
       }
     }
-    ctx.fillStyle = C.gold; // hazard stripe
+    ctx.fillStyle = C.accent; // hazard stripe
     for (let i = 0; i < 5; i++) ctx.fillRect(6 + i * 32, 88, 18, 4);
     ctx.restore();
   }
 
   function drawPallets(ctx, p, instP) {
-    if (p < 0.34) return;
+    if (p < 0.42) return;
     const left = Math.max(0, 1 - instP); // bundles get used up
     const stacks = [[1190, 590], [1265, 600], [1225, 660]];
     stacks.forEach(([px, py], si) => {
@@ -402,7 +459,9 @@
   }
 
   // Expose for the before/after slider in main.js
-  window.BIGHORN_RENDER = renderScene;
+  window.VERTICAL_RENDER = renderScene;
+  // Progress value where storm damage is fully visible but the sky has cleared
+  window.VERTICAL_DAMAGED_P = (T.stormEnd + T.tearStart) / 2;
 
   // ============================================================
   // Wiring: canvas sizing, scroll scrub, captions, video handoff
@@ -446,8 +505,8 @@
   // ----- scroll → progress -----
   let target = 0, shown = -1, needsDraw = true;
   const STAGES = [
-    [0.10, "Old roof"], [0.42, "Tear-off"], [0.54, "Underlayment"],
-    [0.88, "New shingles"], [1.01, "Complete"],
+    [0.07, "Before the storm"], [0.25, "The storm"], [0.50, "Tear-off"],
+    [0.60, "Dry-in"], [0.88, "New shingles"], [1.01, "Restored"],
   ];
 
   function readScroll() {

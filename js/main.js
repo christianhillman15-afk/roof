@@ -1,5 +1,5 @@
 /* ============================================================
-   BigHorn Roofing — page interactions
+   Vertical Solutions Roofing — page interactions
    ============================================================ */
 (function () {
   "use strict";
@@ -20,7 +20,7 @@
   );
   document.querySelectorAll(".reveal").forEach((el) => revealIO.observe(el));
 
-  // ----- animated counters -----
+  // ----- animated counters (supports prefix, suffix, decimals) -----
   const easeOut = (t) => 1 - Math.pow(1 - t, 3);
   const counterIO = new IntersectionObserver((entries) => {
     entries.forEach((e) => {
@@ -28,11 +28,15 @@
       counterIO.unobserve(e.target);
       const el = e.target;
       const end = +el.dataset.count;
+      const decimals = +(el.dataset.decimals || 0);
+      const prefix = el.dataset.prefix || "";
       const suffix = el.dataset.suffix || "";
       const t0 = performance.now(), dur = 1400;
       (function step(now) {
         const t = clamp((now - t0) / dur, 0, 1);
-        el.textContent = Math.round(end * easeOut(t)).toLocaleString("en-US") + (t === 1 ? suffix : "");
+        const v = end * easeOut(t);
+        const shown = decimals > 0 ? v.toFixed(decimals) : Math.round(v).toLocaleString("en-US");
+        el.textContent = prefix + shown + (t === 1 ? suffix : "");
         if (t < 1) requestAnimationFrame(step);
       })(t0);
     });
@@ -46,8 +50,10 @@
   const cvBefore = document.getElementById("baBefore");
   const cvAfter = document.getElementById("baAfter");
 
-  if (slider && window.BIGHORN_RENDER) {
+  if (slider && window.VERTICAL_RENDER) {
     const dpr = Math.min(2, window.devicePixelRatio || 1);
+    // "before" shows the roof right after the storm: damaged, sky cleared
+    const damagedP = window.VERTICAL_DAMAGED_P || 0.23;
 
     function paint() {
       const rect = slider.getBoundingClientRect();
@@ -59,7 +65,7 @@
         cv.style.height = rect.height + "px";
         const c = cv.getContext("2d");
         c.setTransform(dpr, 0, 0, dpr, 0, 0);
-        window.BIGHORN_RENDER(c, rect.width, rect.height, cv === cvBefore ? 0 : 1, 0, { zoom: false });
+        window.VERTICAL_RENDER(c, rect.width, rect.height, cv === cvBefore ? damagedP : 1, 0, { zoom: false });
       });
     }
 
@@ -102,17 +108,17 @@
     setPct(50);
   }
 
-  // ----- estimate form → opens a pre-filled email -----
+  // ----- inspection form → opens a pre-filled email -----
   const form = document.getElementById("estimateForm");
   if (form) {
     form.addEventListener("submit", (ev) => {
       ev.preventDefault();
       const v = (id) => (document.getElementById(id).value || "").trim();
-      const subject = encodeURIComponent(`Free estimate request — ${v("fService") || "Roofing"} (${v("fCity") || "Utah"})`);
+      const subject = encodeURIComponent(`Free inspection request — ${v("fService") || "Roofing"} (${v("fCity") || ""})`);
       const body = encodeURIComponent(
-        `Name: ${v("fName")}\nPhone: ${v("fPhone")}\nCity: ${v("fCity")}\nService: ${v("fService")}\n\nDetails:\n${v("fMsg")}\n\n— sent from gobighorn.com`
+        `Name: ${v("fName")}\nPhone: ${v("fPhone")}\nCity: ${v("fCity")}\nService: ${v("fService")}\n\nDetails:\n${v("fMsg")}\n\n— sent from verticalsolutionsroofing.com`
       );
-      window.location.href = `mailto:estimating@bighornroofing.net?subject=${subject}&body=${body}`;
+      window.location.href = `mailto:info@verticalsolutionsroofing.com?subject=${subject}&body=${body}`;
     });
   }
 
