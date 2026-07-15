@@ -502,6 +502,31 @@
     video.load();
   }
 
+  // ----- scroll → VIDEO-TIME remap -----
+  // The AI clip briefly "teleports" the tear-off around 1.0–1.9s. To keep
+  // scroll-scrubbing smooth we dwell on the crappy "before" roof, then rush
+  // through that jump in a narrow scroll band (right as the tear-off caption
+  // appears, so it reads as intentional), then play the rest evenly.
+  // Control points: [scrollFraction, videoFraction], piecewise-linear.
+  const VIDEO_CURVE = [
+    [0.00, 0.00],
+    [0.24, 0.12], // hold the failing roof through the "before"/"damage" beats
+    [0.33, 0.32], // whip through the teleport + into active tear-off
+    [0.56, 0.55], // tear-off → underlayment
+    [1.00, 1.00], // new shingles → restored
+  ];
+  function scrollToVideoFrac(p) {
+    for (let i = 1; i < VIDEO_CURVE.length; i++) {
+      const [s1, v1] = VIDEO_CURVE[i];
+      if (p <= s1) {
+        const [s0, v0] = VIDEO_CURVE[i - 1];
+        const t = s1 === s0 ? 0 : (p - s0) / (s1 - s0);
+        return v0 + (v1 - v0) * t;
+      }
+    }
+    return 1;
+  }
+
   // ----- scroll → progress -----
   let target = 0, shown = -1, needsDraw = true;
   const STAGES = [
@@ -531,7 +556,7 @@
       if (Math.abs(target - shown) < 0.0004) shown = target;
       needsDraw = false;
       if (videoMode && video.duration) {
-        const t = shown * Math.max(0, video.duration - 0.05);
+        const t = scrollToVideoFrac(shown) * Math.max(0, video.duration - 0.05);
         if (Math.abs(video.currentTime - t) > 0.001) {
           if (video.fastSeek && Math.abs(video.currentTime - t) > 0.3) video.fastSeek(t);
           else video.currentTime = t;
